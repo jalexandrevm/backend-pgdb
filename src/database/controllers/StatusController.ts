@@ -2,13 +2,17 @@ import { CreateStatusService, GetAllStatusService, GetStatusByCodigoService, Upd
 
 export class CreateStatusController {
   async handle(req: any, res: any) {
-    const required = ['codigo', 'nome', 'ordem', 'cor'];
+    const required = ['nome', 'ordem', 'cor'];
     for (const key of required) {
       if (!req.body[key]) return res.status(400).json({ error: `Parâmetro obrigatório: ${key}` });
     }
     const service = new CreateStatusService();
-    const status = await service.execute(req.body);
-    return res.status(201).json(status);
+    try {
+      const status = await service.execute(req.body);
+      return res.status(201).json(status);
+    } catch (err) {
+      return res.status(500).json({ error: `Erro ao criar status: ${err.message}` });
+    }
   }
 }
 
@@ -36,9 +40,13 @@ export class UpdateStatusController {
     const { codigo } = req.params;
     if (!codigo) return res.status(400).json({ error: 'Parâmetro obrigatório: codigo' });
     const service = new UpdateStatusService();
-    const status = await service.execute(codigo, req.body);
-    if (!status) return res.status(404).json({ error: 'Status não encontrado' });
-    return res.json(status);
+    try {
+      const status = await service.execute(codigo, req.body);
+      if (!status) return res.status(404).json({ error: 'Status não encontrado' });
+      return res.json(status);
+    } catch (err) {
+      return res.status(500).json({ error: `Erro ao atualizar status: ${err.message}` });
+    }
   }
 }
 

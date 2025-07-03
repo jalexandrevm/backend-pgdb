@@ -15,16 +15,16 @@ myDbSource.initialize()
   });
 
 // Importando as rotas
-import { routesCategory } from './routes/routesCategory';
-import { routesUser } from './routes/routesUser';
-import { routesVideo } from './routes/routesVideo';
-import { routesEmpresa } from './routes/routesEmpresa';
 import { routesUsuario } from './routes/routesUsuario';
 import { routesTecnico } from './routes/routesTecnico';
+import { routesEmpresa } from './routes/routesEmpresa';
+import { routesCliente } from './routes/routesCliente';
+import { routesSecaoDepSubDep } from './routes/routesSecaoDepSubDep';
 import { routesStatus } from './routes/routesStatus';
 import { routesSituacao } from './routes/routesSituacao';
-import { routesProduto } from './routes/routesProduto';
-import { routesCliente } from './routes/routesCliente';
+import { routesProduto, routesProdutoAuxiliar } from './routes/routesProduto';
+import { routesAtendimento } from './routes/routesAtendimento';
+import { routesSyspdv } from './routes/routesSyspdv';
 
 const app = express();
 const PORT = process.env.PORT || 3081;
@@ -40,16 +40,18 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(routesUser);
-app.use(routesUsuario);
-app.use(routesEmpresa);
-app.use(routesTecnico);
-app.use(routesStatus);
-app.use(routesSituacao);
-app.use(routesProduto);
-app.use(routesCategory);
-app.use(routesVideo);
-app.use(routesCliente);
+app.use("/apiv1/app", routesUsuario);
+app.use("/apiv1/app", routesTecnico);
+app.use("/apiv1/app", routesEmpresa);
+app.use("/apiv1/app", routesCliente);
+app.use("/apiv1/app", routesSecaoDepSubDep);
+app.use("/apiv1/app", routesStatus);
+app.use("/apiv1/app", routesSituacao);
+app.use("/apiv1/app", routesProduto);
+app.use("/apiv1/app", routesProdutoAuxiliar);
+app.use("/apiv1/app", routesAtendimento);
+app.use('/apiv1/syspdv', routesSyspdv);
+app.use("/apiv1/app", routesSecaoDepSubDep);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!');

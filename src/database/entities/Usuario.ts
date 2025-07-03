@@ -1,8 +1,9 @@
-import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { Entity, PrimaryColumn, Column, Unique } from 'typeorm';
 
 @Entity('usuarios')
+@Unique(['nome', 'apelido', 'email'])
 export class Usuario {
-  @PrimaryColumn()
+  @PrimaryColumn({ length: 6 })
   codigo: string;
 
   @Column()

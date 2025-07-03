@@ -2,13 +2,17 @@ import { CreateSituacaoService, GetAllSituacoesService, GetSituacaoByCodigoServi
 
 export class CreateSituacaoController {
   async handle(req: any, res: any) {
-    const required = ['codigo', 'nome', 'ordem', 'status_codigo', 'cor'];
+    const required = ['nome', 'ordem', 'codigoStatus', 'cor'];
     for (const key of required) {
       if (!req.body[key]) return res.status(400).json({ error: `Parâmetro obrigatório: ${key}` });
     }
     const service = new CreateSituacaoService();
-    const situacao = await service.execute(req.body);
-    return res.status(201).json(situacao);
+    try {
+      const situacao = await service.execute(req.body);
+      return res.status(201).json(situacao);
+    } catch (err) {
+      return res.status(500).json({ error: `Erro ao criar situação: ${err.message}` });
+    }
   }
 }
 
@@ -22,10 +26,10 @@ export class GetAllSituacoesController {
 
 export class GetSituacaoByCodigoController {
   async handle(req: any, res: any) {
-    const { codigo } = req.params;
-    if (!codigo) return res.status(400).json({ error: 'Parâmetro obrigatório: codigo' });
+    const { codigoStatus, codigo } = req.params;
+    if (!codigoStatus || !codigo) return res.status(400).json({ error: 'Parâmetro obrigatório: codigoStatus e codigo' });
     const service = new GetSituacaoByCodigoService();
-    const situacao = await service.execute(codigo);
+    const situacao = await service.execute(codigoStatus, codigo);
     if (!situacao) return res.status(404).json({ error: 'Situação não encontrada' });
     return res.json(situacao);
   }
@@ -33,10 +37,10 @@ export class GetSituacaoByCodigoController {
 
 export class UpdateSituacaoController {
   async handle(req: any, res: any) {
-    const { codigo } = req.params;
-    if (!codigo) return res.status(400).json({ error: 'Parâmetro obrigatório: codigo' });
+    const { codigoStatus, codigo } = req.params;
+    if (!codigoStatus || !codigo) return res.status(400).json({ error: 'Parâmetro obrigatório: codigoStatus e codigo' });
     const service = new UpdateSituacaoService();
-    const situacao = await service.execute(codigo, req.body);
+    const situacao = await service.execute(codigoStatus, codigo, req.body);
     if (!situacao) return res.status(404).json({ error: 'Situação não encontrada' });
     return res.json(situacao);
   }
@@ -44,10 +48,10 @@ export class UpdateSituacaoController {
 
 export class DeleteSituacaoController {
   async handle(req: any, res: any) {
-    const { codigo } = req.params;
-    if (!codigo) return res.status(400).json({ error: 'Parâmetro obrigatório: codigo' });
+    const { codigoStatus, codigo } = req.params;
+    if (!codigoStatus || !codigo) return res.status(400).json({ error: 'Parâmetro obrigatório: codigoStatus e codigo' });
     const service = new DeleteSituacaoService();
-    const ok = await service.execute(codigo);
+    const ok = await service.execute(codigoStatus, codigo);
     if (!ok) return res.status(404).json({ error: 'Situação não encontrada' });
     return res.status(204).send();
   }

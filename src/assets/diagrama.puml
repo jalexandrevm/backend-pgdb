@@ -1,0 +1,114 @@
+@startuml
+' Diagrama de entidades do sistema
+
+entity Empresa {
+  +codigo: string [PK]
+  ...
+}
+
+entity Usuario {
+  +codigo: string [PK]
+  ...
+}
+
+entity Tecnico {
+  +codigo: string [PK]
+  +codigoUsuario: string [FK]
+  ...
+}
+
+entity Cliente {
+  +codigo: string [PK]
+  ...
+}
+
+entity Status {
+  +codigo: string [PK]
+  ...
+}
+
+entity Situacao {
+  +codigo: string [PK]
+  +codigoStatus: string [FK]
+  ...
+}
+
+entity Secao {
+  +codigo: string [PK]
+  +descricao: string
+}
+
+entity Departamento {
+  +codigoSecao: string [PK]
+  +codigo: string [PK]
+  +descricao: string
+}
+
+entity SubDepartamento {
+  +codigoSecao: string [PK]
+  +codigoDepartamento: string [PK]
+  +codigo: string [PK]
+  +descricao: string
+}
+
+entity Produto {
+  +codigo: string [PK]
+  +codigoSecao: string [FK] // obrigatório
+  +codigoDepartamento: string [FK, opcional]
+  +codigoSubDepartamento: string [FK, opcional]
+  ...
+}
+
+entity ProdutoAuxiliar {
+  +codigoAuxiliar: string [PK]
+  +codigoProduto: string [FK]
+  ...
+}
+
+entity Atendimento {
+  +codigo: string [PK]
+  +codigoEmpresa: string [FK]
+  +codigoUsuario: string [FK]
+  +codigoCliente: string [FK]
+  +codigoStatus: string [FK]
+  +codigoSituacao: string [FK]
+  ...
+}
+
+entity AtendimentoInteracao {
+  +codigo: string [PK]
+  +codigoAtendimento: string [FK]
+  +codigoTecnico: string [FK] // obrigatório
+  +codigoSituacao: string [FK]
+  ...
+}
+
+entity AtendimentoProduto {
+  +codigo: int [PK]
+  +codigoAtendimento: string [FK]
+  +codigoUsuario: string [FK]
+  +codigoProduto: string [FK]
+  +codigoAuxiliar: string [FK]
+  ...
+}
+
+' Relacionamentos principais
+Empresa ||--o{ Atendimento : "presta"
+Usuario ||--o{ Atendimento : "abre"
+Cliente ||--o{ Atendimento : "solicita"
+Status ||--o{ Atendimento : "status"
+Situacao ||--o{ Atendimento : "situacao"
+Atendimento ||--o{ AtendimentoInteracao : "possui"
+Atendimento ||--o{ AtendimentoProduto : "possui"
+Produto ||--o{ AtendimentoProduto : "usado" // obrigatório
+Produto ||--o{ ProdutoAuxiliar : "possui"
+ProdutoAuxiliar ||--o{ AtendimentoProduto : "auxilia" // opcional
+Tecnico ||--o{ AtendimentoInteracao : "atua" // obrigatório
+Usuario ||--o{ Tecnico : "referencia"
+Secao ||--o{ Departamento : "possui"
+Departamento ||--o{ SubDepartamento : "possui"
+Secao ||--o{ SubDepartamento : "possui"
+Departamento ||--o{ Produto : "possui  "  opcional "0..1   "
+Secao ||--o{ Produto : "possui" // obrigatório
+SubDepartamento ||--o{ Produto : "possui " opcional "0..1  "
+@enduml

@@ -3,22 +3,22 @@ import { Status } from './Status';
 
 @Entity('situacoes')
 export class Situacao {
-  @PrimaryColumn()
+  @PrimaryColumn({ length: 3 })
+  codigoStatus: string;
+
+  @ManyToOne(() => Status, status => status.codigo)
+  @JoinColumn({ name: 'codigoStatus', referencedColumnName: 'codigo' })
+  status: Status;
+
+  @PrimaryColumn({ length: 3 })
   codigo: string;
 
   @Column()
   nome: string;
 
-  @Column()
-  ordem: string;
+  @Column('int')
+  ordem: number;
 
-  @Column()
-  cor: string;
-
-  @Column()
-  status_codigo: string;
-
-  @ManyToOne(() => Status)
-  @JoinColumn({ name: 'status_codigo' })
-  status: Status;
+  @Column({ nullable: true })
+  cor?: string;
 }

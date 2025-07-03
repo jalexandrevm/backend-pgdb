@@ -2,10 +2,10 @@ import { Entity, PrimaryColumn, Column } from 'typeorm';
 
 @Entity('empresas')
 export class Empresa {
-  @PrimaryColumn()
+  @PrimaryColumn({ length: 4 })
   codigo: string;
 
-  @Column()
+  @Column({ length: 14 })
   cnpj_cpf: string;
 
   @Column()
@@ -50,9 +50,11 @@ export class Empresa {
   @Column()
   email: string;
 
-  @Column('int')
-  regime_estadual: number;
+  @Column({ length: 1 })
+  regime_estadual: string;
+  // 'S' para Simples Nacional, 'N' para Normal
 
-  @Column('int')
-  regime_federal: number;
+  @Column({ length: 1 })
+  regime_federal: string;
+  // 'S' para Simples Nacional, 'R' para Real, 'P' para Presumido
 }

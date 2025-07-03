@@ -2,10 +2,10 @@ import { Entity, PrimaryColumn, Column } from 'typeorm';
 
 @Entity('clientes')
 export class Cliente {
-  @PrimaryColumn()
+  @PrimaryColumn({ length: 6 })
   codigo: string;
 
-  @Column()
+  @Column({ length: 14 })
   cnpj_cpf: string;
 
   @Column()
@@ -50,9 +50,7 @@ export class Cliente {
   @Column()
   email: string;
 
-  @Column('int')
-  regime_estadual: number;
-
-  @Column('int')
-  regime_federal: number;
+  @Column({ length: 1 })
+  sexo: string;
+  // 'M' para Masculino, 'F' para Feminino, 'E' para Empresa
 }

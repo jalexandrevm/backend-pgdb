@@ -1,16 +1,17 @@
-import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { Entity, PrimaryColumn, Column, Unique } from 'typeorm';
 
 @Entity('status')
 export class Status {
-  @PrimaryColumn()
+  @PrimaryColumn({ length: 3 })
+  @Unique(['nome'])
   codigo: string;
 
   @Column()
   nome: string;
 
-  @Column()
-  ordem: string;
+  @Column('int')
+  ordem: number;
 
-  @Column()
-  cor: string;
+  @Column({ nullable: true })
+  cor?: string;
 }

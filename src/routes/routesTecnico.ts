@@ -5,8 +5,8 @@ const routesTecnico = Router();
 
 routesTecnico.post('/tecnicos', new CreateTecnicoController().handle);
 routesTecnico.get('/tecnicos', new GetAllTecnicosController().handle);
-routesTecnico.get('/tecnicos/:codigo', new GetTecnicoByCodigoController().handle);
-routesTecnico.put('/tecnicos/:codigo', new UpdateTecnicoController().handle);
-routesTecnico.delete('/tecnicos/:codigo', new DeleteTecnicoController().handle);
+routesTecnico.get('/tecnicos/:codigoUsuario/:codigo', new GetTecnicoByCodigoController().handle);
+routesTecnico.put('/tecnicos/:codigoUsuario/:codigo', new UpdateTecnicoController().handle);
+routesTecnico.delete('/tecnicos/:codigoUsuario/:codigo', new DeleteTecnicoController().handle);
 
 export { routesTecnico };

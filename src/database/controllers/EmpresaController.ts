@@ -4,14 +4,19 @@ import { CreateEmpresaService, GetAllEmpresasService, GetEmpresaByCodigoService,
 export class CreateEmpresaController {
   async handle(req: any, res: any) {
     const required = [
-      'codigo', 'cnpj_cpf', 'ie_rg', 'razao_nome', 'fantasia_apelido', 'cep', 'pais', 'uf', 'cidade', 'logradouro', 'numero', 'bairro', 'complemento', 'fone1', 'fone2', 'email', 'regime_estadual', 'regime_federal'
+      'cnpj_cpf', 'ie_rg', 'razao_nome', 'fantasia_apelido', 'cep', 'pais', 'uf', 'cidade', 'logradouro', 'numero', 'bairro', 'complemento', 'fone1', 'fone2', 'email', 'regime_estadual', 'regime_federal'
     ];
     for (const key of required) {
       if (!req.body[key]) return res.status(400).json({ error: `Parâmetro obrigatório: ${key}` });
     }
-    const service = new CreateEmpresaService();
-    const empresa = await service.execute(req.body);
-    return res.status(201).json(empresa);
+    try {
+      const service = new CreateEmpresaService();
+      const empresa = await service.execute(req.body);
+      return res.status(201).json(empresa);
+    } catch (err) {
+      console.error('Erro ao criar empresa:', err);
+      return res.status(500).json({ error: `Erro ao criar. ${err.message}` });
+    }
   }
 }
 
@@ -39,9 +44,13 @@ export class UpdateEmpresaController {
     const { codigo } = req.params;
     if (!codigo) return res.status(400).json({ error: 'Parâmetro obrigatório: codigo' });
     const service = new UpdateEmpresaService();
-    const empresa = await service.execute(codigo, req.body);
-    if (!empresa) return res.status(404).json({ error: 'Empresa não encontrada' });
-    return res.json(empresa);
+    try {
+      const empresa = await service.execute(codigo, req.body);
+      if (!empresa) return res.status(404).json({ error: 'Empresa não encontrada' });
+      return res.json(empresa);
+    } catch (err) {
+      return res.status(500).json({ error: `Erro ao atualizar empresa: ${err.message}` });
+    }
   }
 }
 

@@ -8,14 +8,16 @@
   "scripts": {
     "migrate": "ts-node ./node_modules/typeorm/cli.js migration:run -d src/database/db-source.ts",
     "migrate:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert -d src/database/db-source.ts",
-    "migrate:create": "npx typeorm migration:create src/database/migrations/%npm_config_name%",
-    "typeorm": "node ./node_modules/typeorm/cli.js",
+    "migrate:create": "ts-node ./node_modules/typeorm/cli.js migration:create src/database/migrations/%npm_config_name%",
+    "migrate:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate src/database/migrations/InitAllEntities -d src/database/db-source.ts",
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "node-firebird": "^1.1.9",
     "pg": "^8.16.0",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.24"
