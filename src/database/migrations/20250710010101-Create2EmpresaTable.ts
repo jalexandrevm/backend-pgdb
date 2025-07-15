@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateClienteTable1750626000000 implements MigrationInterface {
+export class CreateEmpresaTable20250710010101 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(new Table({
-      name: "clientes",
+      name: "empresas",
       columns: [
-        { name: "codigo", type: "varchar", length: "6", isPrimary: true },
+        { name: "codigo", type: "varchar", length: "4", isPrimary: true },
         { name: "cnpj_cpf", type: "varchar", length: "14", isNullable: false },
         { name: "ie_rg", type: "varchar", isNullable: false },
         { name: "razao_nome", type: "varchar", isNullable: false },
@@ -21,12 +21,16 @@ export class CreateClienteTable1750626000000 implements MigrationInterface {
         { name: "fone1", type: "varchar", isNullable: false },
         { name: "fone2", type: "varchar", isNullable: false },
         { name: "email", type: "varchar", isNullable: false },
-        { name: "sexo", type: "varchar", length: "1", isNullable: false }
+        { name: "regime_estadual", type: "varchar", length: "1", isNullable: false },
+        { name: "regime_federal", type: "varchar", length: "1", isNullable: false }
       ]
     }));
+
+    // Valor inicial para empresa modelo
+    await queryRunner.query(`INSERT INTO empresas (codigo, cnpj_cpf, ie_rg, razao_nome, fantasia_apelido, cep, pais, uf, cidade, logradouro, numero, bairro, complemento, fone1, fone2, email, regime_estadual, regime_federal) VALUES ('1', '01234567890123', 'ISENTO', 'Empresa Modelo', 'Empresa Modelo', '01234567', 'BR', 'DF', 'Brasília', 'Av Principal', '1400', 'Centro', 'S/N', '011987654321', '010987654321', 'admin@adm.com', 'S', 'S')`);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("clientes");
+    await queryRunner.dropTable("empresas");
   }
 }

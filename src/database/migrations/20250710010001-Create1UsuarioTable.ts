@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table, TableUnique } from "typeorm";
 
-export class CreateUsuarioTable1750623589649 implements MigrationInterface {
+export class CreateUsuarioTable20250710010001 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -48,6 +48,8 @@ export class CreateUsuarioTable1750623589649 implements MigrationInterface {
         columnNames: ["nome", "apelido", "email"]
       })
     );
+    // Valor inicial para usuário admin
+    await queryRunner.query(`INSERT INTO usuarios (codigo, nome, apelido, senha, email, permissao) VALUES ('1', 'Admin', 'Admin', 'adm123456', 'admin@adm.com', 'TOTAL')`);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

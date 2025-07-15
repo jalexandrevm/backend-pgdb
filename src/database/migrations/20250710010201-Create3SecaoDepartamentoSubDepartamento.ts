@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
-export class CreateSecaoDepartamentoSubDepartamento1750627000000 implements MigrationInterface {
+export class CreateSecaoDepartamentoSubDepartamento20250710010201 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // Secao
     await queryRunner.createTable(new Table({

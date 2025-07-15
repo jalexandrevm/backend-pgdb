@@ -6,18 +6,20 @@ import { ProdutoAuxiliar } from './ProdutoAuxiliar';
 
 @Entity('atendimentos_produtos')
 export class AtendimentoProduto {
-  @PrimaryColumn()
-  codigo: number;
+  @PrimaryColumn({ length: 10 })
+  codigo: string;
 
-  @Column()
+  @Column({ length: 10 })
   codigoAtendimento: string;
-  @ManyToOne(() => Atendimento)
+
+  @ManyToOne(() => Atendimento, atendimento => atendimento.codigo)
   @JoinColumn({ name: 'codigoAtendimento', referencedColumnName: 'codigo' })
   atendimento: Atendimento;
 
-  @Column()
+  @Column({ length: 6 })
   codigoUsuario: string;
-  @ManyToOne(() => Usuario)
+
+  @ManyToOne(() => Usuario, usuario => usuario.codigo)
   @JoinColumn({ name: 'codigoUsuario', referencedColumnName: 'codigo' })
   usuario: Usuario;
 
@@ -31,9 +33,10 @@ export class AtendimentoProduto {
   @Column('int')
   posicao: number;
 
-  @Column()
+  @Column({ length: 14 })
   codigoProduto: string;
-  @ManyToOne(() => Produto)
+
+  @ManyToOne(() => Produto, produto => produto.codigo)
   @JoinColumn({ name: 'codigoProduto', referencedColumnName: 'codigo' })
   produto: Produto;
 
@@ -51,7 +54,8 @@ export class AtendimentoProduto {
 
   @Column({ length: 20, nullable: true, default: null })
   codigoAuxiliar?: string;
-  @ManyToOne(() => ProdutoAuxiliar, { nullable: true })
+
+  @ManyToOne(() => ProdutoAuxiliar, prodAuxiliar => prodAuxiliar.codigoAuxiliar, { nullable: true })
   @JoinColumn({ name: 'codigoAuxiliar', referencedColumnName: 'codigoAuxiliar' })
   produtoAuxiliar: ProdutoAuxiliar;
 

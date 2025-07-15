@@ -3,6 +3,7 @@ import { myDbSource } from '../db-source';
 import { Atendimento } from '../entities/Atendimento';
 import { AtendimentoInteracao } from '../entities/AtendimentoInteracao';
 import { Tecnico } from '../entities/Tecnico';
+import { AtendimentoProduto } from '../entities/AtendimentoProduto';
 
 export class CreateAtendimentoService {
   async execute(data: Partial<Atendimento>): Promise<Atendimento> {
@@ -161,5 +162,67 @@ export class GetProdutosByAtendimentoService {
   async execute(codigoAtendimento: string): Promise<any[]> {
     codigoAtendimento = codigoAtendimento.toString().padStart(10, '0');
     return myDbSource.getRepository('AtendimentoProduto').find({ where: { codigoAtendimento } });
+  }
+}
+
+// AtendimentoProduto
+export class CreateAtendimentoProdutoService {
+  async execute(data: Partial<AtendimentoProduto>): Promise<AtendimentoProduto> {
+    // Gera código sequencial se não fornecido
+    if (!data.codigo) {
+      const maxCodigoResult = await myDbSource.getRepository(AtendimentoProduto).find({
+        select: ["codigo"],
+        order: { codigo: "DESC" },
+        take: 1
+      });
+      if (maxCodigoResult.length === 0) {
+        data.codigo = "1".padStart(10, '0'); // Inicia com 1 se não houver produtos
+      } else {
+        data.codigo = (Number(maxCodigoResult[0].codigo) + 1).toString().padStart(10, '0');
+      }
+    }
+    // Padroniza campos
+    data.codigoAtendimento = data.codigoAtendimento?.toString().padStart(10, '0');
+    data.codigoUsuario = data.codigoUsuario?.toString().padStart(6, '0');
+    data.codigoProduto = data.codigoProduto?.toString().padStart(6, '0');
+    if (data.codigoAuxiliar)
+      data.codigoAuxiliar = data.codigoAuxiliar?.toString();
+    const repo = myDbSource.getRepository(AtendimentoProduto);
+    const atendimentoProduto = repo.create(data);
+    await repo.save(atendimentoProduto);
+    return atendimentoProduto;
+  }
+}
+
+export class GetAllAtendimentoProdutosService {
+  async execute(): Promise<AtendimentoProduto[]> {
+    return myDbSource.getRepository(AtendimentoProduto).find();
+  }
+}
+
+export class GetAtendimentoProdutoByCodigoService {
+  async execute(codigo: string): Promise<AtendimentoProduto | null> {
+    codigo = codigo.toString().padStart(10, '0');
+    return myDbSource.getRepository(AtendimentoProduto).findOneBy({ codigo });
+  }
+}
+
+export class UpdateAtendimentoProdutoService {
+  async execute(codigo: string, data: Partial<AtendimentoProduto>): Promise<AtendimentoProduto | null> {
+    codigo = codigo.toString().padStart(10, '0');
+    const repo = myDbSource.getRepository(AtendimentoProduto);
+    const atendimentoProduto = await repo.findOneBy({ codigo });
+    if (!atendimentoProduto) return null;
+    Object.assign(atendimentoProduto, data);
+    await repo.save(atendimentoProduto);
+    return atendimentoProduto;
+  }
+}
+
+export class DeleteAtendimentoProdutoService {
+  async execute(codigo: string): Promise<boolean> {
+    const repo = myDbSource.getRepository(AtendimentoProduto);
+    const result = await repo.delete({ codigo });
+    return result.affected !== 0;
   }
 }

@@ -6,25 +6,32 @@
   "author": "Alexandre Marques",
   "main": "src/server.js",
   "scripts": {
-    "migrate": "ts-node ./node_modules/typeorm/cli.js migration:run -d src/database/db-source.ts",
-    "migrate:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert -d src/database/db-source.ts",
-    "migrate:create": "ts-node ./node_modules/typeorm/cli.js migration:create src/database/migrations/%npm_config_name%",
+    "migrate:run": "ts-node src/database/tools/migration-action.ts run",
+    "migrate:revert": "ts-node src/database/tools/migration-action.ts revert",
+    "migrate:create": "ts-node src/database/tools/migration-action.ts create",
     "migrate:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate src/database/migrations/InitAllEntities -d src/database/db-source.ts",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "prestart": "node -r dotenv/config ./dist/server.js || true",
+    "start": "node -r dotenv/config dist/server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^5.1.0",
     "node-firebird": "^1.1.9",
     "pg": "^8.16.0",
     "reflect-metadata": "^0.2.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "typeorm": "^0.3.24"
   },
   "devDependencies": {
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"
   }

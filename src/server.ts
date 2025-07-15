@@ -1,6 +1,9 @@
 import 'reflect-metadata';
+require('dotenv').config();
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './swagger';
 
 // Conectando ao banco de dados
 // Importando o arquivo de configuração do banco de dados
@@ -27,11 +30,14 @@ import { routesAtendimento } from './routes/routesAtendimento';
 import { routesSyspdv } from './routes/routesSyspdv';
 
 const app = express();
-const PORT = process.env.PORT || 3081;
+const PORT = process.env.PORT || 1001;
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Documentação Swagger
+app.use('/apiv1/app/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const usuarios = [];
 

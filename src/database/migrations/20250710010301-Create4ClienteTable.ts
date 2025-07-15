@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateEmpresaTable1750625000000 implements MigrationInterface {
+export class CreateClienteTable20250710010301 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(new Table({
-      name: "empresas",
+      name: "clientes",
       columns: [
-        { name: "codigo", type: "varchar", length: "4", isPrimary: true },
+        { name: "codigo", type: "varchar", length: "6", isPrimary: true },
         { name: "cnpj_cpf", type: "varchar", length: "14", isNullable: false },
         { name: "ie_rg", type: "varchar", isNullable: false },
         { name: "razao_nome", type: "varchar", isNullable: false },
@@ -21,13 +21,12 @@ export class CreateEmpresaTable1750625000000 implements MigrationInterface {
         { name: "fone1", type: "varchar", isNullable: false },
         { name: "fone2", type: "varchar", isNullable: false },
         { name: "email", type: "varchar", isNullable: false },
-        { name: "regime_estadual", type: "varchar", length: "1", isNullable: false },
-        { name: "regime_federal", type: "varchar", length: "1", isNullable: false }
+        { name: "sexo", type: "varchar", length: "1", isNullable: false }
       ]
     }));
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("empresas");
+    await queryRunner.dropTable("clientes");
   }
 }

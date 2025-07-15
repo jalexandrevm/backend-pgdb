@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
-export class CreateProdutoAndProdutoAuxiliarTables20250630000000 implements MigrationInterface {
+export class CreateProdutoAndProdutoAuxiliarTables20250710010701 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // Produto
     await queryRunner.createTable(new Table({

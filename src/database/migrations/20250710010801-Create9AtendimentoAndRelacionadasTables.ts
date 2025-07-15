@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
-export class CreateAtendimentoAndRelacionadasTables20250630020000 implements MigrationInterface {
+export class CreateAtendimentoAndRelacionadasTables20250710010801 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // Atendimento
     await queryRunner.createTable(new Table({
@@ -95,9 +95,9 @@ export class CreateAtendimentoAndRelacionadasTables20250630020000 implements Mig
     await queryRunner.createTable(new Table({
       name: "atendimentos_produtos",
       columns: [
-        { name: "codigo", type: "serial", isPrimary: true },
+        { name: "codigo", type: "varchar", length: "10", isPrimary: true },
         { name: "codigoAtendimento", type: "varchar", length: "10", isNullable: false },
-        { name: "codigoUsuario", type: "varchar", length: "4", isNullable: false },
+        { name: "codigoUsuario", type: "varchar", length: "6", isNullable: false },
         { name: "dataInclusao", type: "timestamp", isNullable: false },
         { name: "tipoProduto", type: "varchar", length: "1", isNullable: false },
         { name: "posicao", type: "int", isNullable: false },
